@@ -52,6 +52,6 @@ class UNet(nn.Module):
         x = self.upsample(x)        
         x = torch.cat([x, conv1], dim=1)   
         
-        out = self.dconv_up1(x)
-
+        x = self.dconv_up1(x)
+        out = self.conv_last(x)
         return out
