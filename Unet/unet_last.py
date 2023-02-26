@@ -1,6 +1,7 @@
 import os
 import torch
 import model as pytorch_unet
+import vanilla_unet as vanilla_unet
 from torch.utils.data import DataLoader
 from test import test_model
 from train import train_model
@@ -35,12 +36,8 @@ torch.autograd.set_detect_anomaly(True)
 
 dataloaders = {"train": train_loader, "val": val_loader}
 
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device)
-model = pytorch_unet.UNet(1)
-
-model = model.to(device)
 reshape_size = 512
 
 dtype = torch.cuda.FloatTensor
@@ -71,11 +68,20 @@ os.makedirs(output_save_dir, exist_ok=True)
 log_file = os.path.join(output_save_dir, "logs.txt")
 num_class = 1
 
-model = pytorch_unet.UNet(num_class)
+# model = vanilla_unet.UNet(num_class)
+####################
+model_name = "can/vanilla_unet_epoch150.pt"
+
+device = torch.device("cuda")
+dtype = torch.cuda.FloatTensor
+model = vanilla_unet.UNet(1).to(device)
+model.load_state_dict(torch.load(model_name))
+#####################
+model_name = "vanilla_unet_epoch250.pt"
 
 model = model.to(device)
 
-optimizer_ft = optim.Adam(model.parameters(), lr=1e-4, weight_decay=args.weight_decay)
+optimizer_ft = optim.Adam(model.parameters(), lr=1e-4)
 
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=5, gamma=0.9)
 

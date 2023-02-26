@@ -67,7 +67,7 @@ def calc_auc(pred_arr, gt_arr, mask_arr=None):
 
 
 def numeric_score(
-    pred_arr, gt_arr, kernel_size=(1, 1)
+    pred_arr, gt_arr, kernel_size=(3, 3)
 ):  # DCC & ROSE-2: kernel_size=(3, 3)
     """Computation of statistical numerical scores:
 
@@ -89,28 +89,28 @@ def numeric_score(
     return FP, FN, TP, TN
 
 
-def calc_acc(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_acc(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     acc = (TP + TN) / (FP + FN + TP + TN)
 
     return acc
 
 
-def calc_sen(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_sen(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     sen = TP / (FN + TP + 1e-12)
 
     return sen
 
 
-def calc_fdr(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_fdr(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     fdr = FP / (FP + TP + 1e-12)
 
     return fdr
 
 
-def calc_spe(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_spe(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     spe = TN / (FP + TN + 1e-12)
 
@@ -118,7 +118,7 @@ def calc_spe(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size
 
 
 def calc_gmean(
-    pred_arr, gt_arr, kernel_size=(1, 1)
+    pred_arr, gt_arr, kernel_size=(3, 3)
 ):  # DCC & ROSE-2: kernel_size=(3, 3)
     sen = calc_sen(pred_arr, gt_arr, kernel_size=kernel_size)
     spe = calc_spe(pred_arr, gt_arr, kernel_size=kernel_size)
@@ -127,7 +127,7 @@ def calc_gmean(
 
 
 def calc_kappa(
-    pred_arr, gt_arr, kernel_size=(1, 1)
+    pred_arr, gt_arr, kernel_size=(3, 3)
 ):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size=kernel_size)
     matrix = np.array([[TP, FP], [FN, TN]])
@@ -148,14 +148,14 @@ def calc_kappa(
     return (po - pe) / (1 - pe)
 
 
-def calc_iou(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_iou(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     iou = TP / (FP + FN + TP + 1e-12)
 
     return iou
 
 
-def calc_dice(pred_arr, gt_arr, kernel_size=(1, 1)):  # DCC & ROSE-2: kernel_size=(3, 3)
+def calc_dice(pred_arr, gt_arr, kernel_size=(3, 3)):  # DCC & ROSE-2: kernel_size=(3, 3)
     FP, FN, TP, TN = numeric_score(pred_arr, gt_arr, kernel_size)
     dice = 2.0 * TP / (FP + FN + 2.0 * TP + 1e-12)
 
