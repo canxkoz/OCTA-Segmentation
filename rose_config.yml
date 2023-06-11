@@ -1,0 +1,39 @@
+model_config:
+  model: UNet1 #the directory to which the results are saved
+  initial_filter_size: [32]
+  kernel: [3]
+  dropout: False
+  drop_out_rate: [0.2]
+  class_weights: [1,8] # 8 is the weight of white pixels 1 is the weight of black pixels give the wanted ratio
+  input_size: [512, 512] #h, w
+  channel: 1
+  num_class: 1
+  model_type: "single_dropout" #multi_task,multi_alpha,attention,fourier1,single,single_dropout,multitask_dropout
+  anydepth: False
+  
+train_config:
+  class_loss: BCE # ce,BCE
+  reg_loss : mse # mse,rmse
+  val_accuracy: BCE # BCE,dice,ce,dice_bce
+  optimizer: Radam
+  lr_rate: [0.0001]
+  weight_decay: [0]
+  batch_size: [6]
+  epochs: 150
+  num_workers: 20
+  use_cuda: True
+  
+ 
+dataset_config:
+  train_path: '/kuacc/users/hpc-ckoz/DRAC/DRAC2022/data/rose2-L/train/'
+  val_path: '/kuacc/users/hpc-ckoz/DRAC/DRAC2022/data/rose2-L/test/'
+  test_path: '/kuacc/users/hpc-ckoz/DRAC/DRAC2022/data/rose2-L/test/'
+  aug_rate: [0]
+  save_dir: expE150W08_multitask-alpha_32F-Experiment
+  class_names: ['background','label2']
+  
+resume:
+  flag: False
+  path: exp2_fouirer//models//last_epoch.pt
+  epoch: 150
+
